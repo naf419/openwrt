@@ -91,27 +91,27 @@
 			};
 			
 			partition@80000 {
-				compatible = "denx,uimage";
-				label = "firmware";
-				reg = <0x080000 0xe00000>;
-			};
-			
-			partition@e80000 {
 				label = "product-info";
-				reg = <0xe80000 0x05000>;
+				reg = <0x80000 0x05000>;
 				read-only;
 			};
 
-			config: partition@e85000 {
+			config: partition@85000 {
 				label = "config";
-				reg = <0xe85000 0x16b000>;
+				reg = <0x85000 0x16b000>;
 				read-only;
 			};
 			
-			art: partition@ff0000 {
+			art: partition@1f0000 {
 				label = "art";
-				reg = <0xff0000 0x010000>;
+				reg = <0x1f0000 0x10000>;
 				read-only;
+			};
+
+			partition@200000 {
+				compatible = "denx,uimage";
+				label = "firmware";
+				reg = <0x200000 0xe00000>;
 			};
 		};
 	};
@@ -122,25 +122,10 @@
 
 	phy-mode = "sgmii";
 	phy-handle = <&phy0>;
-	
-	nvmem-cells = <&macaddr_config_8>;
-	nvmem-cell-names = "mac-address";
 };
 
 &wmac {
 	status = "okay";
 
 	mtd-cal-data = <&art 0x1000>;
-	nvmem-cells = <&macaddr_config_8>;
-	nvmem-cell-names = "mac-address";
-};
-
-&config {
-	compatible = "nvmem-cells";
-	#address-cells = <1>;
-	#size-cells = <1>;
-
-	macaddr_config_8: macaddr@8 {
-		reg = <0x8 0x6>;
-	};
 };
