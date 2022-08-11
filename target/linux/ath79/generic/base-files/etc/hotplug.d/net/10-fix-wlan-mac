@@ -1,0 +1,18 @@
+#!/bin/sh
+
+[ "$ACTION" = "add" ] || exit
+
+. /lib/functions/system.sh
+board=$(board_name)
+
+case $board in
+tplink,deco-m4r-v1)
+	[ "$DEVPATH" = "/devices/platform/ahb/18100000.wmac/net/wlan1" ] && {
+		base_mac=$(deco_decrypt $(find_mtd_part config) 0 6 | hexdump -v -n 6 -s 0 -e '5/1 "%02x:" 1/1 "%02x"')
+		wlan_mac=$(macaddr_add $base_mac 1)
+		ip link set dev wlan1 down
+		ip link set dev wlan1 address $wlan_mac
+		ip link set dev wlan1 up
+	}
+	;;
+esac
