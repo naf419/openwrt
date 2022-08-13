@@ -18,8 +18,8 @@ preinit_set_mac_address() {
 	siemens,ws-ap3610)
 		ip link set dev eth0 address $(mtd_get_mac_ascii cfg1 ethaddr)
 		;;
-	tplink,deco-m4r-v1)
-		base_mac=$(deco_decrypt $(find_mtd_part config) 0 6 | hexdump -v -n 6 -s 0 -e '5/1 "%02x:" 1/1 "%02x"')
+	tplink,deco-s4-v2)
+		base_mac=$(deco_decrypt $(find_mtd_part config) 0 6 | macaddr_bin2str)
 		ip link set dev eth0 address $base_mac
 		;;
 	zyxel,nbg6616)

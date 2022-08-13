@@ -201,6 +201,10 @@ macaddr_2bin() {
 	echo -ne \\x${mac//:/\\x}
 }
 
+macaddr_bin2str() {
+	cat - | hexdump -v -n 6 -e '5/1 "%02x:" 1/1 "%02x"' 2>/dev/null
+}
+
 macaddr_canonicalize() {
 	local mac="$1"
 	local canon=""
